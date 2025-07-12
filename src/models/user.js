@@ -42,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
     console.log(user);
     const encryptedPassword = bcrypt.hashSync(user.password, +ServerConfig.SALT_ROUNDS);
     user.password = encryptedPassword;
-    console.log(`Encrypted password: ${user.password}`); // Debugging line to check the encrypted password
+    console.log(`Encrypted password: ${user.password}`); // Debugging line to check the encrypted password 
   });
   return User;
 };
