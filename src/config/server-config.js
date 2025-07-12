@@ -5,4 +5,6 @@ module.exports={
     ,SALT_ROUNDS:process.env.SALT_ROUNDS || 10
     ,JWT_SECRET:process.env.JWT_SECRET || 'default'
     ,JWT_EXPIRY:process.env.JWT_EXPIRY || '1h'
+    ,FLIGHT_SERVICE_URL:process.env.FLIGHT_SERVICE_URL || 'http://localhost:3000'
+    ,BOOKING_SERVICE_URL:process.env.BOOKING_SERVICE_URL || 'http://localhost:4000'
 };
