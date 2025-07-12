@@ -4,12 +4,15 @@ const { Logger } = require('../config');
 const AppError = require('../utils/errors/app-error');
 const bcrypt = require('bcrypt');
 const Auth = require('../utils/common/auth');
+const { Enums } = require('../utils/common');
 const userRepo = new UserRepository();
+const { RoleRepository } = require('../repositories');
+const roleRepo = new RoleRepository();
 async function create(data) {
     try {
         const user = await userRepo.create(data);
-        // const role = await roleRepo.getRoleByName(Enums.USER_ROLES_ENUMS.CUSTOMER);
-        // user.addRole(role);
+        const role = await roleRepo.getRoleByName(Enums.USER_ROLES_ENUMS.CUSTOMER);
+        user.addRole(role);
         return user;
     } catch(error) {
         console.log(error.name);
