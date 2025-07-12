@@ -2,6 +2,9 @@
 const {
   Model
 } = require('sequelize');
+
+const bcrypt = require('bcrypt');
+const { ServerConfig } = require('../config');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -9,25 +12,37 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
-      // define association here
-    }
+    // static associate(models) {
+    //   // define association here
+    //   this.belongsToMany(models.Role, {through: 'User_Roles', as: 'role'});
+    // }
   }
   User.init({
-    email: { type: DataTypes.STRING, allowNull: false ,
-      unique: true ,
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
       validate: {
-        isEmail: true,
+        isEmail: true
       }
     },
-    password: { type: DataTypes.STRING, allowNull: false,
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
       validate: {
-          len: [3, 50] // Example validation for password length
-        }
-     }
+        len: [3, 50]
+      }
+    },
   }, {
     sequelize,
     modelName: 'User',
+  });
+
+  User.beforeCreate(function encrypt(user) {
+    console.log(user);
+    const encryptedPassword = bcrypt.hashSync(user.password, +ServerConfig.SALT_ROUNDS);
+    user.password = encryptedPassword;
+    console.log(`Encrypted password: ${user.password}`); // Debugging line to check the encrypted password
   });
   return User;
 };
